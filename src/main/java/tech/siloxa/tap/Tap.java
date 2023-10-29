@@ -1,6 +1,7 @@
 package tech.siloxa.tap;
 
 import tech.siloxa.tap.panel.MainPanel;
+import tech.siloxa.tap.util.FontLoader;
 import tech.siloxa.tap.util.ResponsiveUtils;
 
 import javax.swing.*;
@@ -8,9 +9,9 @@ import java.awt.*;
 
 public class Tap {
 
-    public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-
-    public static final Dimension frameSize = new Dimension(380, 600);
+    public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
+    public static final Dimension FRAME_SIZE = new Dimension(380, 700);
+    public static final Font FONT = FontLoader.load();
 
     private JFrame frame;
 
@@ -32,12 +33,12 @@ public class Tap {
     }
 
     private void initialize() {
-        final Dimension centerOfDisplay = ResponsiveUtils.getCenterOfDisplay(screenSize, frameSize);
+        final Dimension centerOfDisplay = ResponsiveUtils.getCenterOfDisplay(SCREEN_SIZE, FRAME_SIZE);
 
         frame = new JFrame();
         frame.setBounds(
                 (int) centerOfDisplay.getWidth(), (int) centerOfDisplay.getHeight(),
-                (int) frameSize.getWidth(), (int) frameSize.getHeight()
+                (int) FRAME_SIZE.getWidth(), (int) FRAME_SIZE.getHeight()
         );
         frame.setTitle("Tap");
         frame.setResizable(false);

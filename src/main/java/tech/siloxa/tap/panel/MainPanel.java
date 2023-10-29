@@ -19,8 +19,14 @@ public class MainPanel extends JPanel {
 
     public void render() {
         renderSettingIcon();
-
         renderDarkModeIcon();
+        renderTitle();
+    }
+
+    private void renderSettingIcon() {
+        final IconButton settingIcon = new IconButton("setting").bounds(24, 24);
+        settingIcon.render();
+        add(settingIcon);
     }
 
     private void renderDarkModeIcon() {
@@ -29,13 +35,15 @@ public class MainPanel extends JPanel {
         add(moonIcon);
     }
 
-    private static int resolveDarkModeButtonXPosition() {
-        return (int) (Tap.frameSize.getWidth() - 48);
+    private void renderTitle() {
+        final JLabel title = new JLabel("Hello!");
+        title.setBounds(146, 112, 87, 29);
+        title.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
+        title.setHorizontalAlignment(SwingConstants.CENTER);
+        add(title);
     }
 
-    private void renderSettingIcon() {
-        final IconButton settingIcon = new IconButton("setting").bounds(24, 24);
-        settingIcon.render();
-        add(settingIcon);
+    private static int resolveDarkModeButtonXPosition() {
+        return (int) (Tap.FRAME_SIZE.getWidth() - 48);
     }
 }
