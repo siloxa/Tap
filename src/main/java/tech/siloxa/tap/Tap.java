@@ -1,5 +1,6 @@
 package tech.siloxa.tap;
 
+import tech.siloxa.tap.panel.MainPanel;
 import tech.siloxa.tap.util.ResponsiveUtils;
 
 import javax.swing.*;
@@ -7,9 +8,9 @@ import java.awt.*;
 
 public class Tap {
 
-    private final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+    public static final Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-    private final Dimension frameSize = new Dimension(380, 600);
+    public static final Dimension frameSize = new Dimension(380, 600);
 
     private JFrame frame;
 
@@ -34,12 +35,18 @@ public class Tap {
         final Dimension centerOfDisplay = ResponsiveUtils.getCenterOfDisplay(screenSize, frameSize);
 
         frame = new JFrame();
-        frame.setTitle("Tap");
         frame.setBounds(
                 (int) centerOfDisplay.getWidth(), (int) centerOfDisplay.getHeight(),
                 (int) frameSize.getWidth(), (int) frameSize.getHeight()
         );
-        frame.setBackground(Color.WHITE);
+        frame.setTitle("Tap");
+        frame.setResizable(false);
+        frame.setLocationRelativeTo(null);
+        frame.getContentPane().setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        final MainPanel mainPanel = new MainPanel();
+        mainPanel.render();
+        frame.setContentPane(mainPanel);
     }
 }
