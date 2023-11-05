@@ -1,15 +1,18 @@
 package tech.siloxa.tap.component;
 
+import tech.siloxa.tap.model.Theme;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Box extends JLabel {
 
     public static final int SIZE = 148;
-    private static final Color BG = new Color(235, 235, 235);
+    private static final Color LIGHT_BACKGROUND = new Color(235, 235, 235);
+    private static final Color DARK_BACKGROUND = new Color(66, 66, 66);
 
-    public Box() {
-        initialize();
+    public Box(Theme theme) {
+        initialize(theme);
     }
 
     @Override
@@ -22,8 +25,12 @@ public class Box extends JLabel {
         graphics.fillRoundRect(0, 0, SIZE - 1, SIZE - 1, arcs.width, arcs.height);
     }
 
-    private void initialize() {
-        setBackground(BG);
+    private void initialize(Theme theme) {
+        setBackground(resolveBackgroundColor(theme));
+    }
+
+    private static Color resolveBackgroundColor(Theme theme) {
+        return theme == Theme.LIGHT ? LIGHT_BACKGROUND : DARK_BACKGROUND;
     }
 
     public Box bounds(int x, int y) {

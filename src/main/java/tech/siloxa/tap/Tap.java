@@ -14,26 +14,23 @@ public class Tap {
     public static final Dimension FRAME_SIZE = new Dimension(380, 700);
     public static final Font FONT = FontLoader.load();
 
-    private JFrame frame;
+    public static JFrame frame;
+
+    static {
+        initialize();
+    }
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    final Tap tap = new Tap();
-                    tap.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                frame.setVisible(true);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         });
     }
 
-    public Tap() {
-        initialize();
-    }
-
-    private void initialize() {
+    private static void initialize() {
         final Dimension centerOfDisplay = ResponsiveUtils.getCenterOfDisplay(SCREEN_SIZE, FRAME_SIZE);
 
         frame = new JFrame();
