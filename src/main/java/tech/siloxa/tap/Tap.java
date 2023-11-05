@@ -14,7 +14,7 @@ public class Tap {
     public static final Dimension FRAME_SIZE = new Dimension(380, 700);
     public static final Font FONT = FontLoader.load();
 
-    public static JFrame frame;
+    private static JFrame frame;
 
     static {
         initialize();
@@ -47,5 +47,11 @@ public class Tap {
         final MainPanel mainPanel = new MainPanel(Theme.LIGHT);
         mainPanel.render();
         frame.setContentPane(mainPanel);
+    }
+
+    public static void changePanel(JPanel panel) {
+        frame.setContentPane(panel);
+        frame.revalidate();
+        frame.repaint();
     }
 }

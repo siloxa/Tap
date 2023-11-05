@@ -54,9 +54,7 @@ public class MainPanel extends JPanel {
                     public void mouseClicked(MouseEvent mouseEvent) {
                         final MainPanel mainPanel = new MainPanel(resolveNextThemeMode());
                         mainPanel.render();
-                        Tap.frame.setContentPane(mainPanel);
-                        Tap.frame.revalidate();
-                        Tap.frame.repaint();
+                        Tap.changePanel(mainPanel);
                     }
                 }
         );
