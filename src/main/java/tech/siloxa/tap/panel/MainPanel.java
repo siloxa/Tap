@@ -2,6 +2,7 @@ package tech.siloxa.tap.panel;
 
 import tech.siloxa.tap.Tap;
 import tech.siloxa.tap.component.IconButton;
+import tech.siloxa.tap.component.Box;
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,6 +22,8 @@ public class MainPanel extends JPanel {
         renderSettingIcon();
         renderDarkModeIcon();
         renderTitle();
+        renderWorkTimeBox();
+        renderRestTimeBox();
     }
 
     private void renderSettingIcon() {
@@ -41,6 +44,20 @@ public class MainPanel extends JPanel {
         title.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
         title.setHorizontalAlignment(SwingConstants.CENTER);
         add(title);
+    }
+
+    private void renderWorkTimeBox() {
+        final Box box = new Box().bounds(24, 417);
+        add(box);
+    }
+
+    private void renderRestTimeBox() {
+        final Box box = new Box().bounds(resolveRestTimeBoxXPosition(), 417);
+        add(box);
+    }
+
+    private static int resolveRestTimeBoxXPosition() {
+        return (int) (Tap.FRAME_SIZE.getWidth() - (24 + Box.SIZE));
     }
 
     private static int resolveDarkModeButtonXPosition() {
