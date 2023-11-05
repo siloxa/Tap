@@ -1,5 +1,6 @@
 package tech.siloxa.tap;
 
+import tech.siloxa.tap.model.Theme;
 import tech.siloxa.tap.panel.MainPanel;
 import tech.siloxa.tap.util.FontLoader;
 import tech.siloxa.tap.util.ResponsiveUtils;
@@ -46,7 +47,7 @@ public class Tap {
         frame.getContentPane().setLayout(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        final MainPanel mainPanel = new MainPanel();
+        final MainPanel mainPanel = new MainPanel(Theme.LIGHT);
         mainPanel.render();
         frame.setContentPane(mainPanel);
     }
