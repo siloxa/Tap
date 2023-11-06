@@ -106,7 +106,7 @@ public class MainPanel extends JPanel {
         add(timerBar);
 
         TIMER = new JLabel(renderDurationAsString(TIMER_DURATION));
-        TIMER.setBounds(34, 97, 152, 25);
+        TIMER.setBounds(32, 97, 156, 25);
         TIMER.setForeground(resolveFontColor());
         TIMER.setFont(Tap.FONT.deriveFont(30F).deriveFont(Font.BOLD));
         TIMER.setHorizontalAlignment(SwingConstants.CENTER);
