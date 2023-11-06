@@ -3,6 +3,7 @@ package tech.siloxa.tap.panel;
 import tech.siloxa.tap.Tap;
 import tech.siloxa.tap.component.Box;
 import tech.siloxa.tap.component.IconButton;
+import tech.siloxa.tap.component.Timer;
 import tech.siloxa.tap.model.SystemConfiguration;
 import tech.siloxa.tap.model.Theme;
 import tech.siloxa.tap.util.SystemConfigurationUtils;
@@ -30,6 +31,7 @@ public class MainPanel extends JPanel {
         renderSettingIcon();
         renderThemeIcon();
         renderTitle();
+        renderTimer();
         renderWorkTimeBox();
         renderRestTimeBox();
     }
@@ -46,7 +48,7 @@ public class MainPanel extends JPanel {
     }
 
     private void renderThemeIcon() {
-        final IconButton themeIcon = new IconButton("theme", systemConfiguration.getTheme()).bounds(resolveDarkModeButtonXPosition(), 24);
+        final IconButton themeIcon = new IconButton("theme", systemConfiguration.getTheme()).bounds(resolveThemeButtonXPosition(), 24);
         themeIcon.addMouseListener(
                 new MouseAdapter() {
                     @Override
@@ -76,8 +78,18 @@ public class MainPanel extends JPanel {
         add(title);
     }
 
+    private void renderTimer() {
+        final Timer timer = new Timer(systemConfiguration.getTheme()).bounds(resolveTimerXPosition(), 180);
+        timer.setValue(70);
+        add(timer);
+    }
+
+    private int resolveTimerXPosition() {
+        return (int) (Tap.FRAME_SIZE.getWidth() / 2) - (Timer.SIZE / 2);
+    }
+
     private void renderWorkTimeBox() {
-        final Box box = new Box(systemConfiguration.getTheme()).bounds(24, 417);
+        final Box box = new Box(systemConfiguration.getTheme()).bounds(24, 437);
         add(box);
         final JLabel boxHeader = renderBoxHeader("Work Time");
         box.add(boxHeader);
@@ -86,7 +98,7 @@ public class MainPanel extends JPanel {
     }
 
     private void renderRestTimeBox() {
-        final Box box = new Box(systemConfiguration.getTheme()).bounds(resolveRestTimeBoxXPosition(), 417);
+        final Box box = new Box(systemConfiguration.getTheme()).bounds(resolveRestTimeBoxXPosition(), 437);
         add(box);
         final JLabel boxHeader = renderBoxHeader("Rest Time");
         box.add(boxHeader);
@@ -132,7 +144,7 @@ public class MainPanel extends JPanel {
         return (int) (Tap.FRAME_SIZE.getWidth() - (24 + Box.SIZE));
     }
 
-    private static int resolveDarkModeButtonXPosition() {
+    private static int resolveThemeButtonXPosition() {
         return (int) (Tap.FRAME_SIZE.getWidth() - 48);
     }
 }

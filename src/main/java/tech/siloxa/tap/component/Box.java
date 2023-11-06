@@ -15,6 +15,11 @@ public class Box extends JLabel {
         initialize(theme);
     }
 
+    public Box bounds(int x, int y) {
+        setBounds(x, y, SIZE, SIZE);
+        return this;
+    }
+
     @Override
     protected void paintComponent(Graphics g) {
         final Dimension arcs = new Dimension(16, 16);
@@ -31,10 +36,5 @@ public class Box extends JLabel {
 
     private static Color resolveBackgroundColor(Theme theme) {
         return theme == Theme.LIGHT ? LIGHT_BACKGROUND : DARK_BACKGROUND;
-    }
-
-    public Box bounds(int x, int y) {
-        setBounds(x, y, SIZE, SIZE);
-        return this;
     }
 }
