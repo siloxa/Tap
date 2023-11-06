@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.Duration;
 
 public class MainPanel extends JPanel {
 
@@ -80,7 +81,7 @@ public class MainPanel extends JPanel {
         add(box);
         final JLabel boxHeader = renderBoxHeader("Work Time");
         box.add(boxHeader);
-        final JLabel boxTime = renderBoxTime("01:00");
+        final JLabel boxTime = renderBoxTime(renderDurationAsString(systemConfiguration.getWorkTime()));
         box.add(boxTime);
     }
 
@@ -89,8 +90,16 @@ public class MainPanel extends JPanel {
         add(box);
         final JLabel boxHeader = renderBoxHeader("Rest Time");
         box.add(boxHeader);
-        final JLabel boxTime = renderBoxTime("01:00");
+        final JLabel boxTime = renderBoxTime(renderDurationAsString(systemConfiguration.getRestTime()));
         box.add(boxTime);
+    }
+
+    private String renderDurationAsString(Duration duration) {
+        final long totalSeconds = duration.getSeconds();
+        final long hours = totalSeconds / 3600;
+        final long minutes = (totalSeconds % 3600) / 60;
+
+        return String.format("%02d:%02d", hours, minutes);
     }
 
     private JLabel renderBoxHeader(String header) {
