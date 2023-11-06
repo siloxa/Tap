@@ -27,7 +27,7 @@ public class Timer extends JProgressBar {
         setBackground(resolveBackgroundColor(theme));
         setForeground(new Color(97, 97, 97));
         setBorderPainted(false);
-        setStringPainted(true);
+        setStringPainted(false);
         setUI(new CircularProgressBarUI(this, resolveBarColor(theme)));
     }
 

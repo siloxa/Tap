@@ -97,10 +97,10 @@ public class CircularProgressBarUI extends BasicProgressBarUI {
     }
 
     private void paintString(Graphics g) {
-        Insets b = progressBar.getInsets(); // area for border
-        int barRectWidth = progressBar.getWidth() - b.right - b.left;
-        int barRectHeight = progressBar.getHeight() - b.top - b.bottom;
+        Insets insets = progressBar.getInsets(); // area for border
+        int barRectWidth = progressBar.getWidth() - insets.right - insets.left;
+        int barRectHeight = progressBar.getHeight() - insets.top - insets.bottom;
         g.setColor(jProgressBar.getForeground());
-        paintString(g, b.left, b.top, barRectWidth, barRectHeight, 0, b);
+        paintString(g, insets.left, insets.top, barRectWidth, barRectHeight, 0, insets);
     }
 }

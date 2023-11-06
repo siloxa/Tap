@@ -4,6 +4,7 @@ import tech.siloxa.tap.Tap;
 import tech.siloxa.tap.component.Box;
 import tech.siloxa.tap.component.IconButton;
 import tech.siloxa.tap.component.Timer;
+import tech.siloxa.tap.model.State;
 import tech.siloxa.tap.model.SystemConfiguration;
 import tech.siloxa.tap.model.Theme;
 import tech.siloxa.tap.util.SystemConfigurationUtils;
@@ -13,6 +14,7 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.Duration;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainPanel extends JPanel {
 
@@ -20,6 +22,12 @@ public class MainPanel extends JPanel {
     private static final Color DARK_THEME_FONT_COLOR = new Color(255, 253, 250);
     private static final Color LIGHT_BACKGROUND = Color.WHITE;
     private static final Color DARK_BACKGROUND = new Color(31, 31, 31);
+    private static JLabel TITLE;
+    private static JLabel TIMER;
+    private static State STATE = State.IDLE;
+    private static Integer PROGRESS_BAR = 0;
+    private static javax.swing.Timer TIMER_COUNTER;
+    private static Duration TIMER_DURATION = Duration.ZERO;
     private final SystemConfiguration systemConfiguration;
 
     public MainPanel(SystemConfiguration systemConfiguration) {
@@ -70,18 +78,80 @@ public class MainPanel extends JPanel {
     }
 
     private void renderTitle() {
-        final JLabel title = new JLabel("Hello!");
-        title.setBounds(146, 112, 87, 29);
-        title.setForeground(resolveFontColor());
-        title.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
-        title.setHorizontalAlignment(SwingConstants.CENTER);
-        add(title);
+        TITLE = new JLabel("Hello!");
+        TITLE.setBounds(131, 112, 120, 29);
+        TITLE.setForeground(resolveFontColor());
+        TITLE.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
+        TITLE.setHorizontalAlignment(SwingConstants.CENTER);
+        add(TITLE);
     }
 
     private void renderTimer() {
-        final Timer timer = new Timer(systemConfiguration.getTheme()).bounds(resolveTimerXPosition(), 180);
-        timer.setValue(70);
-        add(timer);
+        final Timer timerBar = new Timer(systemConfiguration.getTheme()).bounds(resolveTimerXPosition(), 180);
+        timerBar.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent mouseEvent) {
+                        switch (STATE) {
+                            case IDLE -> startTimer(State.WORK_START, timerBar);
+                            case WORK_START, WORK_RESUME -> stopTimer(State.WORK_START);
+                            case WORK_PAUSE -> startTimer(State.WORK_RESUME, timerBar);
+                            case REST_START, REST_RESUME -> stopTimer(State.REST_START);
+                            case REST_PAUSE -> startTimer(State.REST_RESUME, timerBar);
+                        }
+                    }
+                }
+        );
+        timerBar.setValue(PROGRESS_BAR);
+        add(timerBar);
+
+        TIMER = new JLabel(renderDurationAsString(TIMER_DURATION));
+        TIMER.setBounds(34, 97, 152, 25);
+        TIMER.setForeground(resolveFontColor());
+        TIMER.setFont(Tap.FONT.deriveFont(30F).deriveFont(Font.BOLD));
+        TIMER.setHorizontalAlignment(SwingConstants.CENTER);
+        timerBar.add(TIMER);
+    }
+
+    private void stopTimer(State state) {
+        STATE = state == State.WORK_START ? State.WORK_PAUSE : State.REST_PAUSE;
+        TITLE.setText("Pause!");
+
+        if (TIMER_COUNTER != null) {
+            TIMER_COUNTER.stop();
+        }
+    }
+
+    private void startTimer(State state, Timer timerBar) {
+        STATE = state;
+
+        if (state == State.WORK_START) {
+            TIMER_DURATION = Tap.SYSTEM_CONFIGURATION.getWorkTime();
+        } else if (state == State.REST_START) {
+            TIMER_DURATION = Tap.SYSTEM_CONFIGURATION.getRestTime();
+        }
+
+        TITLE.setText("Working");
+
+        final float frequency = TIMER_DURATION.getSeconds() / 100F;
+        final float period = frequency * 10;
+
+        final AtomicInteger progressBarCounter = new AtomicInteger(0);
+        final AtomicInteger clockCounter = new AtomicInteger(0);
+        TIMER_COUNTER = new javax.swing.Timer(100,
+                actionEvent -> {
+                    if (progressBarCounter.incrementAndGet() == period) {
+                        timerBar.setValue(++PROGRESS_BAR);
+                        progressBarCounter.set(0);
+                    }
+                    if (clockCounter.incrementAndGet() == 10) {
+                        TIMER_DURATION = TIMER_DURATION.minus(Duration.ofSeconds(1));
+                        TIMER.setText(renderDurationAsString(TIMER_DURATION));
+                        clockCounter.set(0);
+                    }
+                }
+        );
+        TIMER_COUNTER.start();
     }
 
     private int resolveTimerXPosition() {
@@ -110,8 +180,9 @@ public class MainPanel extends JPanel {
         final long totalSeconds = duration.getSeconds();
         final long hours = totalSeconds / 3600;
         final long minutes = (totalSeconds % 3600) / 60;
+        final long seconds = totalSeconds % 60;
 
-        return String.format("%02d:%02d", hours, minutes);
+        return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
 
     private JLabel renderBoxHeader(String header) {
