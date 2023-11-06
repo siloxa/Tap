@@ -32,6 +32,7 @@ public class Box extends JLabel {
 
     private void initialize(Theme theme) {
         setBackground(resolveBackgroundColor(theme));
+        setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     private static Color resolveBackgroundColor(Theme theme) {
