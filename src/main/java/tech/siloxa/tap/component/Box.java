@@ -17,12 +17,12 @@ public class Box extends JLabel {
 
     @Override
     protected void paintComponent(Graphics g) {
-        super.paintComponent(g);
         final Dimension arcs = new Dimension(16, 16);
         Graphics2D graphics = (Graphics2D) g;
         graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
         graphics.setColor(getBackground());
         graphics.fillRoundRect(0, 0, SIZE - 1, SIZE - 1, arcs.width, arcs.height);
+        super.paintComponent(g);
     }
 
     private void initialize(Theme theme) {
