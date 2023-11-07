@@ -22,7 +22,7 @@ public class MainPanel extends JPanel {
     private static final Color DARK_THEME_FONT_COLOR = new Color(255, 253, 250);
     private static final Color LIGHT_BACKGROUND = Color.WHITE;
     private static final Color DARK_BACKGROUND = new Color(31, 31, 31);
-    private static JLabel TITLE;
+    private static JLabel HEADER;
     private static JLabel TIMER;
     private static State STATE = State.IDLE;
     private static Integer PROGRESS_BAR = 0;
@@ -38,7 +38,7 @@ public class MainPanel extends JPanel {
     public void render() {
         renderSettingIcon();
         renderThemeIcon();
-        renderTitle();
+        renderHeader();
         renderTimer();
         renderWorkTimeBox();
         renderRestTimeBox();
@@ -77,13 +77,13 @@ public class MainPanel extends JPanel {
         return systemConfiguration.getTheme() == Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
     }
 
-    private void renderTitle() {
-        TITLE = new JLabel("Hello!");
-        TITLE.setBounds(131, 112, 120, 29);
-        TITLE.setForeground(resolveFontColor());
-        TITLE.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
-        TITLE.setHorizontalAlignment(SwingConstants.CENTER);
-        add(TITLE);
+    private void renderHeader() {
+        HEADER = new JLabel(STATE.getHeader());
+        HEADER.setBounds(131, 112, 120, 29);
+        HEADER.setForeground(resolveFontColor());
+        HEADER.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
+        HEADER.setHorizontalAlignment(SwingConstants.CENTER);
+        add(HEADER);
     }
 
     private void renderTimer() {
@@ -115,7 +115,7 @@ public class MainPanel extends JPanel {
 
     private void stopTimer(State state) {
         STATE = state == State.WORK_START ? State.WORK_PAUSE : State.REST_PAUSE;
-        TITLE.setText("Pause!");
+        HEADER.setText(STATE.getHeader());
 
         if (TIMER_COUNTER != null) {
             TIMER_COUNTER.stop();
@@ -131,7 +131,7 @@ public class MainPanel extends JPanel {
             TIMER_DURATION = Tap.SYSTEM_CONFIGURATION.getRestTime();
         }
 
-        TITLE.setText("Working");
+        HEADER.setText(STATE.getHeader());
 
         final float frequency = TIMER_DURATION.getSeconds() / 100F;
         final float period = frequency * 10;
