@@ -16,22 +16,17 @@ import java.awt.event.MouseEvent;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class MainPanel extends JPanel {
+public class MainPanel extends AbstractPanel {
 
-    private static final Color LIGHT_THEME_FONT_COLOR = Color.BLACK;
-    private static final Color DARK_THEME_FONT_COLOR = new Color(255, 253, 250);
-    private static final Color LIGHT_BACKGROUND = Color.WHITE;
-    private static final Color DARK_BACKGROUND = new Color(31, 31, 31);
     private static JLabel HEADER;
     private static JLabel TIMER;
     private static State STATE = State.IDLE;
     private static Integer PROGRESS_BAR = 0;
     private static javax.swing.Timer TIMER_COUNTER;
     private static Duration TIMER_DURATION = Duration.ZERO;
-    private final SystemConfiguration systemConfiguration;
 
     public MainPanel(SystemConfiguration systemConfiguration) {
-        this.systemConfiguration = systemConfiguration;
+        super(systemConfiguration);
         initialize();
     }
 
@@ -51,6 +46,16 @@ public class MainPanel extends JPanel {
 
     private void renderSettingIcon() {
         final IconButton settingIcon = new IconButton("setting", systemConfiguration.getTheme()).bounds(24, 24);
+        settingIcon.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent mouseEvent) {
+                        final SettingPanel settingPanel = new SettingPanel(systemConfiguration);
+                        settingPanel.render();
+                        Tap.changePanel(settingPanel);
+                    }
+                }
+        );
         settingIcon.render();
         add(settingIcon);
     }
