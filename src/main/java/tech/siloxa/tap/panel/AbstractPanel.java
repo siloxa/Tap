@@ -18,4 +18,12 @@ public abstract class AbstractPanel extends JPanel {
     public AbstractPanel(SystemConfiguration systemConfiguration) {
         this.systemConfiguration = systemConfiguration;
     }
+
+    protected Color resolvePanelBackground() {
+        return systemConfiguration.getTheme() == Theme.LIGHT ? LIGHT_BACKGROUND : DARK_BACKGROUND;
+    }
+
+    protected Color resolveFontColor() {
+        return systemConfiguration.getTheme() == Theme.LIGHT ? LIGHT_THEME_FONT_COLOR : DARK_THEME_FONT_COLOR;
+    }
 }

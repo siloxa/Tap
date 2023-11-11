@@ -7,6 +7,7 @@ import tech.siloxa.tap.component.Timer;
 import tech.siloxa.tap.model.State;
 import tech.siloxa.tap.model.SystemConfiguration;
 import tech.siloxa.tap.model.Theme;
+import tech.siloxa.tap.model.TimeDuration;
 import tech.siloxa.tap.util.SystemConfigurationUtils;
 
 import javax.swing.*;
@@ -165,6 +166,16 @@ public class MainPanel extends AbstractPanel {
 
     private void renderWorkTimeBox() {
         final Box box = new Box(systemConfiguration.getTheme()).bounds(24, 437);
+        box.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent mouseEvent) {
+                        final TimePickPanel timePickPanel = new TimePickPanel(systemConfiguration, TimeDuration.WORK);
+                        timePickPanel.render();
+                        Tap.changePanel(timePickPanel);
+                    }
+                }
+        );
         add(box);
         final JLabel boxHeader = renderBoxHeader("Work Time");
         box.add(boxHeader);
@@ -174,6 +185,16 @@ public class MainPanel extends AbstractPanel {
 
     private void renderRestTimeBox() {
         final Box box = new Box(systemConfiguration.getTheme()).bounds(resolveRestTimeBoxXPosition(), 437);
+        box.addMouseListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent mouseEvent) {
+                        final TimePickPanel timePickPanel = new TimePickPanel(systemConfiguration, TimeDuration.REST);
+                        timePickPanel.render();
+                        Tap.changePanel(timePickPanel);
+                    }
+                }
+        );
         add(box);
         final JLabel boxHeader = renderBoxHeader("Rest Time");
         box.add(boxHeader);
@@ -206,14 +227,6 @@ public class MainPanel extends AbstractPanel {
         boxTime.setFont(Tap.FONT.deriveFont(16F).deriveFont(Font.PLAIN));
         boxTime.setHorizontalAlignment(SwingConstants.CENTER);
         return boxTime;
-    }
-
-    private Color resolvePanelBackground() {
-        return systemConfiguration.getTheme() == Theme.LIGHT ? LIGHT_BACKGROUND : DARK_BACKGROUND;
-    }
-
-    private Color resolveFontColor() {
-        return systemConfiguration.getTheme() == Theme.LIGHT ? LIGHT_THEME_FONT_COLOR : DARK_THEME_FONT_COLOR;
     }
 
     private static int resolveRestTimeBoxXPosition() {

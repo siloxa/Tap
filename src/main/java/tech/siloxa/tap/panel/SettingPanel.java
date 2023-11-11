@@ -5,6 +5,7 @@ import tech.siloxa.tap.component.IconButton;
 import tech.siloxa.tap.model.SystemConfiguration;
 import tech.siloxa.tap.model.Theme;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -39,9 +40,5 @@ public class SettingPanel extends AbstractPanel {
         );
         backIcon.render();
         add(backIcon);
-    }
-
-    private Color resolvePanelBackground() {
-        return systemConfiguration.getTheme() == Theme.LIGHT ? LIGHT_BACKGROUND : DARK_BACKGROUND;
     }
 }
