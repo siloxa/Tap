@@ -8,6 +8,7 @@ import tech.siloxa.tap.model.State;
 import tech.siloxa.tap.model.SystemConfiguration;
 import tech.siloxa.tap.model.Theme;
 import tech.siloxa.tap.model.TimeDuration;
+import tech.siloxa.tap.util.ResponsiveUtils;
 import tech.siloxa.tap.util.SystemConfigurationUtils;
 
 import javax.swing.*;
@@ -93,7 +94,9 @@ public class MainPanel extends AbstractPanel {
     }
 
     private void renderTimer() {
-        final Timer timerBar = new Timer(systemConfiguration.getTheme()).bounds(resolveTimerXPosition(), 180);
+        final Timer timerBar = new Timer(systemConfiguration.getTheme()).bounds(
+                ResponsiveUtils.resolveXPosition(Tap.FRAME_SIZE, Timer.SIZE), 180
+        );
         timerBar.addMouseListener(
                 new MouseAdapter() {
                     @Override
@@ -158,10 +161,6 @@ public class MainPanel extends AbstractPanel {
                 }
         );
         TIMER_COUNTER.start();
-    }
-
-    private int resolveTimerXPosition() {
-        return (int) (Tap.FRAME_SIZE.getWidth() / 2) - (Timer.SIZE / 2);
     }
 
     private void renderWorkTimeBox() {

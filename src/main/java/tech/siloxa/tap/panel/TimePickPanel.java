@@ -6,6 +6,7 @@ import tech.siloxa.tap.component.RoundButton;
 import tech.siloxa.tap.model.SystemConfiguration;
 import tech.siloxa.tap.model.Theme;
 import tech.siloxa.tap.model.TimeDuration;
+import tech.siloxa.tap.util.ResponsiveUtils;
 import tech.siloxa.tap.util.SystemConfigurationUtils;
 
 import javax.swing.*;
@@ -70,7 +71,7 @@ public class TimePickPanel extends AbstractPanel {
     private void renderHeader() {
         final JLabel header = new JLabel(resolveHeader());
         final int width = 110;
-        header.setBounds(resolveHeaderXPosition(width), 80, width, 24);
+        header.setBounds(ResponsiveUtils.resolveXPosition(Tap.FRAME_SIZE, width), 80, width, 24);
         header.setForeground(resolveFontColor());
         header.setFont(Tap.FONT.deriveFont(20F).deriveFont(Font.PLAIN));
         header.setHorizontalAlignment(SwingConstants.CENTER);
@@ -284,10 +285,6 @@ public class TimePickPanel extends AbstractPanel {
         textField.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
         textField.setHorizontalAlignment(SwingConstants.CENTER);
         return textField;
-    }
-
-    private int resolveHeaderXPosition(int width) {
-        return (int) (Tap.FRAME_SIZE.getWidth() / 2) - (width / 2);
     }
 
     private String resolveHeader() {
