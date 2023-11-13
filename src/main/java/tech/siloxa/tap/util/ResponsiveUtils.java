@@ -1,7 +1,5 @@
 package tech.siloxa.tap.util;
 
-import tech.siloxa.tap.Tap;
-
 import java.awt.*;
 
 public class ResponsiveUtils {
