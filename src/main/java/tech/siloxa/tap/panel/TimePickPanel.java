@@ -15,6 +15,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.time.Duration;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class TimePickPanel extends AbstractPanel {
 
@@ -31,12 +33,13 @@ public class TimePickPanel extends AbstractPanel {
     private static JTextField SECOND_FIELD;
     private static JTextField SECOND_FIELD_LOWER_BOUND;
 
-
+    private final ResourceBundle resourceBundle;
     private final TimeDuration timePickerFor;
 
     public TimePickPanel(SystemConfiguration systemConfiguration, TimeDuration timePickerFor) {
         super(systemConfiguration);
         this.timePickerFor = timePickerFor;
+        this.resourceBundle = ResourceBundle.getBundle("i18n.messages", new Locale(systemConfiguration.getLanguage().toString().toLowerCase()));
         initialize();
     }
 
@@ -230,7 +233,7 @@ public class TimePickPanel extends AbstractPanel {
 
     private void renderSetButton() {
         final RoundButton setButton = new RoundButton(systemConfiguration.getTheme(), 312, 52).bounds(34, 400);
-        setButton.setText("Set");
+        setButton.setText(resourceBundle.getString("timePicker.set"));
         setButton.addMouseListener(
                 new MouseAdapter() {
                     @Override
@@ -288,10 +291,6 @@ public class TimePickPanel extends AbstractPanel {
     }
 
     private String resolveHeader() {
-        return toPascalCase(timePickerFor.toString()) + " Time";
-    }
-
-    private String toPascalCase(String string) {
-        return string.substring(0, 1).toUpperCase() + string.substring(1).toLowerCase();
+        return resourceBundle.getString("main." + timePickerFor.toString().toLowerCase() + "-time");
     }
 }

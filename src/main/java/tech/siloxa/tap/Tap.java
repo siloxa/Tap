@@ -24,6 +24,10 @@ public class Tap {
     }
 
     public static void main(String[] args) {
+        run();
+    }
+
+    private static void run() {
         EventQueue.invokeLater(() -> {
             try {
                 frame.setVisible(true);
@@ -31,6 +35,13 @@ public class Tap {
                 throw new RuntimeException(e);
             }
         });
+    }
+
+    public static void reRun() {
+        frame.dispose();
+        frame = null;
+        initialize();
+        run();
     }
 
     private static void initialize() {

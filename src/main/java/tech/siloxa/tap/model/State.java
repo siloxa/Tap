@@ -1,22 +1,12 @@
 package tech.siloxa.tap.model;
 
-public enum State {
+public enum State implements TranslatedEnum<State> {
 
-    IDLE("Hello!"),
-    WORK_START("Working"),
-    REST_START("Resting"),
-    WORK_PAUSE("Pause!"),
-    REST_PAUSE("Pause!"),
-    WORK_RESUME("Working"),
-    REST_RESUME("Working");
-
-    private final String header;
-
-    State(String header) {
-        this.header = header;
-    }
-
-    public String getHeader() {
-        return header;
-    }
+    IDLE,
+    WORK_START,
+    REST_START,
+    WORK_PAUSE,
+    REST_PAUSE,
+    WORK_RESUME,
+    REST_RESUME;
 }

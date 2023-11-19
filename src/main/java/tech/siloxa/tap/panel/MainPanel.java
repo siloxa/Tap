@@ -16,6 +16,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.Duration;
+import java.util.Locale;
+import java.util.ResourceBundle;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MainPanel extends AbstractPanel {
@@ -27,8 +29,11 @@ public class MainPanel extends AbstractPanel {
     private static javax.swing.Timer TIMER_COUNTER;
     private static Duration TIMER_DURATION = Duration.ZERO;
 
+    private final ResourceBundle resourceBundle;
+
     public MainPanel(SystemConfiguration systemConfiguration) {
         super(systemConfiguration);
+        this.resourceBundle = ResourceBundle.getBundle("i18n.messages", new Locale(systemConfiguration.getLanguage().toString().toLowerCase()));
         initialize();
     }
 
@@ -85,7 +90,7 @@ public class MainPanel extends AbstractPanel {
     }
 
     private void renderHeader() {
-        HEADER = new JLabel(STATE.getHeader());
+        HEADER = new JLabel(STATE.translate(systemConfiguration.getLanguage()));
         HEADER.setBounds(131, 112, 120, 29);
         HEADER.setForeground(resolveFontColor());
         HEADER.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
@@ -124,7 +129,7 @@ public class MainPanel extends AbstractPanel {
 
     private void stopTimer(State state) {
         STATE = state == State.WORK_START ? State.WORK_PAUSE : State.REST_PAUSE;
-        HEADER.setText(STATE.getHeader());
+        HEADER.setText(STATE.translate(systemConfiguration.getLanguage()));
 
         if (TIMER_COUNTER != null) {
             TIMER_COUNTER.stop();
@@ -140,7 +145,7 @@ public class MainPanel extends AbstractPanel {
             TIMER_DURATION = Tap.SYSTEM_CONFIGURATION.getRestTime();
         }
 
-        HEADER.setText(STATE.getHeader());
+        HEADER.setText(STATE.translate(systemConfiguration.getLanguage()));
 
         final float frequency = TIMER_DURATION.getSeconds() / 100F;
         final float period = frequency * 10;
@@ -176,7 +181,7 @@ public class MainPanel extends AbstractPanel {
                 }
         );
         add(box);
-        final JLabel boxHeader = renderBoxHeader("Work Time");
+        final JLabel boxHeader = renderBoxHeader(resourceBundle.getString("main.work-time"));
         box.add(boxHeader);
         final JLabel boxTime = renderBoxTime(renderDurationAsString(systemConfiguration.getWorkTime()));
         box.add(boxTime);
@@ -195,7 +200,7 @@ public class MainPanel extends AbstractPanel {
                 }
         );
         add(box);
-        final JLabel boxHeader = renderBoxHeader("Rest Time");
+        final JLabel boxHeader = renderBoxHeader(resourceBundle.getString("main.rest-time"));
         box.add(boxHeader);
         final JLabel boxTime = renderBoxTime(renderDurationAsString(systemConfiguration.getRestTime()));
         box.add(boxTime);

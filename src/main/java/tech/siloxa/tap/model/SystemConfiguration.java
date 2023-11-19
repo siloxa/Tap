@@ -6,6 +6,8 @@ public class SystemConfiguration {
 
     private Theme theme;
 
+    private Language language;
+
     private Duration workTime;
 
     private Duration restTime;
@@ -16,6 +18,14 @@ public class SystemConfiguration {
 
     public void setTheme(Theme theme) {
         this.theme = theme;
+    }
+
+    public Language getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(Language language) {
+        this.language = language;
     }
 
     public Duration getWorkTime() {
