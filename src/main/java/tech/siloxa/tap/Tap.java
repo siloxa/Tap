@@ -14,12 +14,13 @@ public class Tap {
 
     public static final Dimension SCREEN_SIZE = Toolkit.getDefaultToolkit().getScreenSize();
     public static final Dimension FRAME_SIZE = new Dimension(380, 700);
-    public static final Font FONT = FontLoader.load();
+    public static final Font FONT;
     public static final SystemConfiguration SYSTEM_CONFIGURATION;
     private static JFrame frame;
 
     static {
         SYSTEM_CONFIGURATION = SystemConfigurationUtils.load();
+        FONT = FontLoader.load(SYSTEM_CONFIGURATION.getLanguage());
         initialize();
     }
 

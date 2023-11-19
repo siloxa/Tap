@@ -3,7 +3,8 @@ package tech.siloxa.tap.model;
 public enum Language {
 
     EN("English"),
-    DE("Deutsch");
+    DE("Deutsch"),
+    FA("Persian");
 
     final String name;
 

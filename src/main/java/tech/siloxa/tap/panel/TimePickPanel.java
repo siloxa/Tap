@@ -73,7 +73,7 @@ public class TimePickPanel extends AbstractPanel {
 
     private void renderHeader() {
         final JLabel header = new JLabel(resolveHeader());
-        final int width = 110;
+        final int width = 120;
         header.setBounds(ResponsiveUtils.resolveXPosition(Tap.FRAME_SIZE, width), 80, width, 24);
         header.setForeground(resolveFontColor());
         header.setFont(Tap.FONT.deriveFont(20F).deriveFont(Font.PLAIN));

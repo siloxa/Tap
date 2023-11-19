@@ -120,7 +120,7 @@ public class MainPanel extends AbstractPanel {
         add(timerBar);
 
         TIMER = new JLabel(renderDurationAsString(TIMER_DURATION));
-        TIMER.setBounds(32, 97, 156, 25);
+        TIMER.setBounds(32, 97, 156, 30);
         TIMER.setForeground(resolveFontColor());
         TIMER.setFont(Tap.FONT.deriveFont(30F).deriveFont(Font.BOLD));
         TIMER.setHorizontalAlignment(SwingConstants.CENTER);
@@ -217,7 +217,7 @@ public class MainPanel extends AbstractPanel {
 
     private JLabel renderBoxHeader(String header) {
         final JLabel boxHeader = new JLabel(header);
-        boxHeader.setBounds(33, 50, 82, 19);
+        boxHeader.setBounds(29, 50, 90, 19);
         boxHeader.setForeground(resolveFontColor());
         boxHeader.setFont(Tap.FONT.deriveFont(16F).deriveFont(Font.PLAIN));
         boxHeader.setHorizontalAlignment(SwingConstants.CENTER);
