@@ -1,6 +1,7 @@
 package tech.siloxa.tap.panel;
 
 import tech.siloxa.tap.Tap;
+import tech.siloxa.tap.component.Alert;
 import tech.siloxa.tap.component.Box;
 import tech.siloxa.tap.component.IconButton;
 import tech.siloxa.tap.component.Timer;
@@ -26,6 +27,7 @@ public class MainPanel extends AbstractPanel {
     private static JLabel TIMER;
     private static State STATE = State.IDLE;
     private static Integer PROGRESS_BAR = 0;
+    private static Timer TIMER_BAR;
     private static javax.swing.Timer TIMER_COUNTER;
     private static Duration TIMER_DURATION = Duration.ZERO;
 
@@ -91,7 +93,7 @@ public class MainPanel extends AbstractPanel {
 
     private void renderHeader() {
         HEADER = new JLabel(STATE.translate(systemConfiguration.getLanguage()));
-        HEADER.setBounds(131, 112, 120, 29);
+        HEADER.setBounds(106, 112, 170, 29);
         HEADER.setForeground(resolveFontColor());
         HEADER.setFont(Tap.FONT.deriveFont(24F).deriveFont(Font.BOLD));
         HEADER.setHorizontalAlignment(SwingConstants.CENTER);
@@ -99,32 +101,32 @@ public class MainPanel extends AbstractPanel {
     }
 
     private void renderTimer() {
-        final Timer timerBar = new Timer(systemConfiguration.getTheme()).bounds(
+        TIMER_BAR = new Timer(systemConfiguration.getTheme()).bounds(
                 ResponsiveUtils.resolveXPosition(Tap.FRAME_SIZE, Timer.SIZE), 180
         );
-        timerBar.addMouseListener(
+        TIMER_BAR.addMouseListener(
                 new MouseAdapter() {
                     @Override
                     public void mouseClicked(MouseEvent mouseEvent) {
                         switch (STATE) {
-                            case IDLE -> startTimer(State.WORK_START, timerBar);
+                            case IDLE -> startTimer(State.WORK_START);
                             case WORK_START, WORK_RESUME -> stopTimer(State.WORK_START);
-                            case WORK_PAUSE -> startTimer(State.WORK_RESUME, timerBar);
+                            case WORK_PAUSE -> startTimer(State.WORK_RESUME);
                             case REST_START, REST_RESUME -> stopTimer(State.REST_START);
-                            case REST_PAUSE -> startTimer(State.REST_RESUME, timerBar);
+                            case REST_PAUSE -> startTimer(State.REST_RESUME);
                         }
                     }
                 }
         );
-        timerBar.setValue(PROGRESS_BAR);
-        add(timerBar);
+        TIMER_BAR.setValue(PROGRESS_BAR);
+        add(TIMER_BAR);
 
         TIMER = new JLabel(renderDurationAsString(TIMER_DURATION));
         TIMER.setBounds(32, 97, 156, 30);
         TIMER.setForeground(resolveFontColor());
         TIMER.setFont(Tap.FONT.deriveFont(30F).deriveFont(Font.BOLD));
         TIMER.setHorizontalAlignment(SwingConstants.CENTER);
-        timerBar.add(TIMER);
+        TIMER_BAR.add(TIMER);
     }
 
     private void stopTimer(State state) {
@@ -136,7 +138,7 @@ public class MainPanel extends AbstractPanel {
         }
     }
 
-    private void startTimer(State state, Timer timerBar) {
+    private void startTimer(State state) {
         STATE = state;
 
         if (state == State.WORK_START) {
@@ -155,17 +157,46 @@ public class MainPanel extends AbstractPanel {
         TIMER_COUNTER = new javax.swing.Timer(100,
                 actionEvent -> {
                     if (progressBarCounter.incrementAndGet() == period) {
-                        timerBar.setValue(++PROGRESS_BAR);
+                        TIMER_BAR.setValue(++PROGRESS_BAR);
                         progressBarCounter.set(0);
                     }
                     if (clockCounter.incrementAndGet() == 10) {
                         TIMER_DURATION = TIMER_DURATION.minus(Duration.ofSeconds(1));
                         TIMER.setText(renderDurationAsString(TIMER_DURATION));
                         clockCounter.set(0);
+                        if(TIMER_DURATION.isZero()) {
+                            TIMER_COUNTER.stop();
+                            alert();
+                        }
                     }
                 }
         );
         TIMER_COUNTER.start();
+    }
+
+    private void alert() {
+        final Alert alert = new Alert(systemConfiguration);
+        alert.setMessage(resolveAlertMessage());
+        alert.setOkButtonActionListener(
+                new MouseAdapter() {
+                    @Override
+                    public void mouseClicked(MouseEvent mouseEvent) {
+                        switch (STATE) {
+                            case WORK_START, WORK_RESUME -> startTimer(State.REST_START);
+                            case REST_START, REST_RESUME -> startTimer(State.WORK_START);
+                        }
+                        alert.dispose();
+                    }
+                }
+        );
+    }
+
+    private String resolveAlertMessage() {
+        return switch (STATE) {
+            case WORK_START, WORK_RESUME -> resourceBundle.getString("alert.rest");
+            case REST_START, REST_RESUME -> resourceBundle.getString("alert.work");
+            default -> "";
+        };
     }
 
     private void renderWorkTimeBox() {

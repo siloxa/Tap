@@ -45,6 +45,10 @@ public class Tap {
         run();
     }
 
+    public static JFrame getFrame() {
+        return frame;
+    }
+
     private static void initialize() {
         final Dimension centerOfDisplay = ResponsiveUtils.getCenterOfDisplay(SCREEN_SIZE, FRAME_SIZE);
 
