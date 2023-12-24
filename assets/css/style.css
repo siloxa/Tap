@@ -300,7 +300,7 @@ footer {
     border-radius: 24px 24px 0px 0px;
     background: var(--primary);
 }
-footer .row {
+footer .footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
