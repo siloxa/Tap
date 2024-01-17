@@ -26,6 +26,25 @@ $(window).scroll(function(){
     }                   
  });
 
+const downloadButton = document.querySelector(".download-button-icon");
+const downloadMenu = document.querySelector(".download-menu");
+
+downloadButton.addEventListener("click", activeDownloadMenu);
+
+function activeDownloadMenu() {
+    downloadMenu.classList.toggle("active");
+}
+
+window.onclick = function(event) {
+    if (
+        !event.target.classList.contains("download-button-icon") 
+        && !event.target.classList.contains("download-item")
+        && downloadMenu.classList.contains("active")
+      ) {
+        activeDownloadMenu();
+    }
+}
+
  function download() {
     const a = document.createElement('a')
     a.href = "#download";

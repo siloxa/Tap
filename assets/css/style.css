@@ -236,7 +236,7 @@ header .row {
     height: 20px;
 }
 .download-button ul {
-    display: flex;
+    display: none;
     position: absolute;
     bottom: -166px;
     width: 236px;
@@ -248,6 +248,10 @@ header .row {
     background: var(--white);
     box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08);
     cursor: pointer;
+    transition: 0.5s;
+}
+.download-button .active {
+    display: flex;
 }
 .download-button ul li {
     display: flex;
