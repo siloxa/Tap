@@ -236,9 +236,9 @@ header .row {
     height: 20px;
 }
 .download-button ul {
-    display: none;
+    display: flex;
     position: absolute;
-    bottom: -166px;
+    bottom: -200px;
     width: 236px;
     flex-direction: column;
     align-items: flex-start;
@@ -248,10 +248,12 @@ header .row {
     background: var(--white);
     box-shadow: 0px 4px 6px -2px rgba(16, 24, 40, 0.03), 0px 12px 16px -4px rgba(16, 24, 40, 0.08);
     cursor: pointer;
-    transition: 0.5s;
+    transition: all 0.3s ease-in-out;
+    visibility: hidden;
 }
 .download-button .active {
-    display: flex;
+    visibility: visible;
+    bottom: -166px;
 }
 .download-button ul li {
     display: flex;
